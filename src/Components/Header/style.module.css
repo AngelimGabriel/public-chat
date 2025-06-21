@@ -1,0 +1,14 @@
+.divHeader{
+    display: flex;
+    height: 65px;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    background-color: var(--bg-boxes-color);
+}
+.divGitHub{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
