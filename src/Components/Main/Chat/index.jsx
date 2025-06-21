@@ -4,10 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { supabase } from "../../../../supabaseCliente";
 
+const user = localStorage.getItem('user')
+
 export default function Chat() {
   const [text, setText] = useState("");
   const [mensagens, setMensagens] = useState([]);
-  const [user, setUsers] = useState("");
 
   async function buscarMensagem() {
     const { error, data } = await supabase.from("messages").select();
@@ -15,7 +16,6 @@ export default function Chat() {
     if (error) {
       console.log("Não foi possível efetuar a buscar: ", error);
     } else {
-      console.log("Busca concluída: ", data);
       setMensagens(data);
     }
   }
@@ -80,12 +80,6 @@ export default function Chat() {
             type="text"
             placeholder="Digite uma mensagem"
             value={text}
-            onKeyDown={(e) => (e.key === "Enter" ? gravarMensagem() : null)}
-          />
-          <input
-            onChange={(e) => setUsers(e.target.value)}
-            type="text"
-            placeholder="Digite seu nome"
             onKeyDown={(e) => (e.key === "Enter" ? gravarMensagem() : null)}
           />
           <FontAwesomeIcon
