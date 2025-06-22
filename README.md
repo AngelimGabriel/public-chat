@@ -1,6 +1,7 @@
 # Public Chat
 
 Aplicação desenvolvida para aplicar os conhecimentos adquiridos em desenvolvimento web.
+Esse projeto está online e disponível para testes no site: [Public Chat](https://public-chat-blue.vercel.app/)
 
 ## 🛠 Tecnologias
 
