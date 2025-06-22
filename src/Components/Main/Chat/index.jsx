@@ -30,7 +30,6 @@ export default function Chat() {
       text: text,
       country: country,
       country_flag: flag,
-      is_authenticated: false,
     });
     setText('');
     buscarMensagem();
