@@ -1,7 +1,7 @@
-import "./App.css";
-import Header from "./Header";
-import Main from "./Main"
-import UserData from "./UserData";
+import './App.css';
+import Header from './Header';
+import Main from './Main';
+import UserData from './UserData';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Header />
       <Main />
     </>
-  )
+  );
 }
 
 export default App;

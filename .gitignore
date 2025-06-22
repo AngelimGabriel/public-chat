@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 novas_features.txt
 .env
+.prettierrc
+eslint.config.js

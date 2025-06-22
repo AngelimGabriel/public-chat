@@ -38,7 +38,7 @@
 }
 
 .divChatIntern > div:nth-child(2)::-webkit-scrollbar-track {
-  background: var(--bg-boxes-color);
+  background: var(--bg-color);
 }
 
 .divChatIntern > div:nth-child(2)::-webkit-scrollbar-thumb {

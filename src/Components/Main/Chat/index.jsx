@@ -1,39 +1,42 @@
-import { useState, useEffect } from "react";
-import styles from "./style.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { supabase } from "../../../../supabaseCliente";
+import { useState, useEffect } from 'react';
+import styles from './style.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { supabase } from '../../../../supabaseCliente';
 
-const user = localStorage.getItem('user')
+const user = localStorage.getItem('user');
+const country = localStorage.getItem('country');
+const flag = localStorage.getItem('flag');
 
 export default function Chat() {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [mensagens, setMensagens] = useState([]);
 
+  // Busca mensagens no banco de dados
   async function buscarMensagem() {
-    const { error, data } = await supabase.from("messages").select();
-
+    const { error, data } = await supabase.from('messages').select();
     if (error) {
-      console.log("Não foi possível efetuar a buscar: ", error);
+      console.log('Não foi possível efetuar a buscar: ', error);
     } else {
       setMensagens(data);
     }
   }
 
+  // Grava mensagem no banco de dados
   async function gravarMensagem() {
     if (!text.trim() || !user.trim()) return;
-
-    await supabase.from("messages").insert({
+    await supabase.from('messages').insert({
       username: user,
       text: text,
-      country: "brazil",
+      country: country,
+      country_flag: flag,
       is_authenticated: false,
     });
-    setText("");
+    setText('');
     buscarMensagem();
   }
 
-  /*  Temporizador  */
+  /*  Temporizador para buscar mensagens e atualizar horario no chat */
   const [tempo, setTempo] = useState(new Date().toLocaleTimeString());
   useEffect(() => {
     const intervaloID = setInterval(() => {
@@ -60,7 +63,12 @@ export default function Chat() {
                   : styles.divOthersMessages
               }
             >
-              <strong>{mensagem.username}</strong>
+              <strong>{mensagem.username}</strong>{' '}
+              <img
+                src={flag}
+                alt=''
+                style={{ height: '15px', borderRadius: '4px' }}
+              />
               <p>{mensagem.text}</p>
               <div className={styles.divMessageClock}>
                 <p>
@@ -77,16 +85,16 @@ export default function Chat() {
         <div>
           <input
             onChange={(e) => setText(e.target.value)}
-            type="text"
-            placeholder="Digite uma mensagem"
+            type='text'
+            placeholder='Digite uma mensagem'
             value={text}
-            onKeyDown={(e) => (e.key === "Enter" ? gravarMensagem() : null)}
+            onKeyDown={(e) => (e.key === 'Enter' ? gravarMensagem() : null)}
           />
           <FontAwesomeIcon
             onClick={gravarMensagem}
             icon={faPaperPlane}
-            size="2xl"
-            style={{ cursor: "pointer" }}
+            size='2xl'
+            style={{ cursor: 'pointer' }}
           />
         </div>
       </div>
