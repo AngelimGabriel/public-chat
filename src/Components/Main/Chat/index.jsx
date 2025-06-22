@@ -32,7 +32,10 @@ export default function Chat() {
 
   // Busca mensagens no banco de dados
   async function buscarMensagem() {
-    const { error, data } = await supabase.from('messages').select();
+    const { error, data } = await supabase
+      .from('messages')
+      .select()
+      .order('timestamp', { ascending: true });
     if (error) {
       console.log('Não foi possível efetuar a buscar: ', error);
     } else {
@@ -57,12 +60,15 @@ export default function Chat() {
   const [tempo, setTempo] = useState(new Date().toLocaleTimeString());
   useEffect(() => {
     buscarMensagem();
-    const channel = realTimeWebSocket();
     const intervaloID = setInterval(() => {
       setTempo(new Date().toLocaleTimeString());
     }, 500);
+    return () => clearInterval(intervaloID);
+  }, []);
+
+  useEffect(() => {
+    const channel = realTimeWebSocket();
     return () => {
-      clearInterval(intervaloID);
       supabase.removeChannel(channel);
     };
   }, []);
