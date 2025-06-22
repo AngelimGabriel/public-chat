@@ -4,11 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { supabase } from '../../../../supabaseCliente';
 
-const user = localStorage.getItem('user');
-const country = localStorage.getItem('country');
-const flag = localStorage.getItem('flag');
-
 export default function Chat() {
+  const user = localStorage.getItem('user');
+  const country = localStorage.getItem('country');
+  const flag = localStorage.getItem('flag');
   const [text, setText] = useState('');
   const [mensagens, setMensagens] = useState([]);
 
@@ -64,7 +63,7 @@ export default function Chat() {
             >
               <strong>{mensagem.username}</strong>{' '}
               <img
-                src={flag}
+                src={mensagem.country_flag}
                 alt=''
                 style={{ height: '15px', borderRadius: '4px' }}
               />
