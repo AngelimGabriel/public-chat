@@ -46,7 +46,6 @@ localStorage.setItem('user', `@user${Math.floor(Math.random() * 100000)}`);
         text TEXT NOT NULL,
         country VARCHAR,
         country_flag VARCHAR,
-        is_authenticated BOOLEAN DEFAULT FALSE,
         timestamp timestamp default now() NOT NULL
     );
     ```
