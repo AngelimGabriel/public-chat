@@ -8,18 +8,24 @@ export default function Chat() {
   const user = localStorage.getItem('user');
   const country = localStorage.getItem('country');
   const flag = localStorage.getItem('flag');
-  const lastMessageRef = useRef(null);
   const [text, setText] = useState('');
   const [mensagens, setMensagens] = useState([]);
+  const lastMessageRef = useRef(null);
 
   function realTimeWebSocket() {
     const channel = supabase
       .channel('messages_supabase')
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'messages',
-      })
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+        },
+        (payload) => {
+          console.log('Mudança recebida em tempo real:', payload);
+        }
+      )
       .subscribe();
     return channel;
   }
