@@ -1,0 +1,33 @@
+.divNotice {
+  position: absolute;
+  height: 100dvh;
+  width: 100dvw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+.divMessage {
+  background-color: var(--bg-boxes-color);
+  height: 200px;
+  width: 500px;
+  padding: 25px;
+  margin: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 8px;
+  text-align: justify;
+}
+.divMessageBotoes {
+  display: flex;
+  gap: 10px;
+}
+.divMessageBotoes input {
+  flex: 1;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background-color: var(--bg-baloon-other-color);
+}

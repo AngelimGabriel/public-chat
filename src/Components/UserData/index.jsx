@@ -4,6 +4,7 @@ export default function UserData() {
     async function InitUser() {
       const country = localStorage.getItem('country');
       const user = localStorage.getItem('user');
+      const notice = localStorage.getItem('notice');
 
       if (!country) {
         try {
@@ -33,6 +34,9 @@ export default function UserData() {
           'user',
           `@user${Math.floor(Math.random() * 100000)}`
         );
+      }
+      if (!notice) {
+        localStorage.setItem('notice', false);
       }
     }
     InitUser();

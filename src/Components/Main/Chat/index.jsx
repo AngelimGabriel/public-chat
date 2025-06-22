@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './style.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
@@ -8,8 +8,21 @@ export default function Chat() {
   const user = localStorage.getItem('user');
   const country = localStorage.getItem('country');
   const flag = localStorage.getItem('flag');
+  const lastMessageRef = useRef(null);
   const [text, setText] = useState('');
   const [mensagens, setMensagens] = useState([]);
+
+  function realTimeWebSocket() {
+    const channel = supabase
+      .channel('messages_supabase')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages',
+      })
+      .subscribe();
+    return channel;
+  }
 
   // Busca mensagens no banco de dados
   async function buscarMensagem() {
@@ -37,12 +50,20 @@ export default function Chat() {
   /*  Temporizador para buscar mensagens e atualizar horario no chat */
   const [tempo, setTempo] = useState(new Date().toLocaleTimeString());
   useEffect(() => {
+    buscarMensagem();
+    const channel = realTimeWebSocket();
     const intervaloID = setInterval(() => {
       setTempo(new Date().toLocaleTimeString());
-      buscarMensagem();
     }, 500);
-    return () => clearInterval(intervaloID);
+    return () => {
+      clearInterval(intervaloID);
+      supabase.removeChannel(channel);
+    };
   }, []);
+
+  useEffect(() => {
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [mensagens]);
 
   return (
     <div className={styles.divChat}>
@@ -52,9 +73,10 @@ export default function Chat() {
           <p>{tempo}</p>
         </div>
         <div>
-          {mensagens.map((mensagem) => (
+          {mensagens.map((mensagem, index) => (
             <div
               key={mensagem.id}
+              ref={index === mensagens.length - 1 ? lastMessageRef : null}
               className={
                 mensagem.username === user
                   ? styles.divMyMessages
