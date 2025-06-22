@@ -1,32 +1,51 @@
-:root{
-  --light-theme-bg-color: hsl(210, 20%, 98%);
+:root {
+  --light-theme-bg-color: hsl(210, 20%, 95%);
+  --light-theme-bg-baloon-other-color: hsl(210, 45%, 85%);
+  --light-theme-bg-baloon-my-color: hsl(210, 45%, 78%);
   --light-theme-bg-boxes-color: hsl(210, 20%, 90%);
   --light-theme-font-color: hsl(221, 39%, 11%);
   --light-theme-divider-color: #ccc;
 
   --dark-theme-bg-color: hsl(215, 28%, 17%);
+  --dark-theme-bg-baloon-other-color: hsl(210, 45%, 21%);
+  --dark-theme-bg-baloon-my-color: hsl(210, 45%, 15%);
   --dark-theme-bg-boxes-color: hsl(215, 28%, 9%);
   --dark-theme-font-color: hsl(220, 14%, 96%);
   --dark-theme-divider-color: hsl(0, 0%, 20%);
 
   --bg-color: var(--light-theme-bg-color);
   --bg-boxes-color: var(--light-theme-bg-boxes-color);
+  --bg-baloon-other-color: var(--light-theme-bg-baloon-other-color);
+  --bg-baloon-my-color: var(--light-theme-bg-baloon-my-color);
   --font-color: var(--light-theme-font-color);
-  --divider-color: var(--light-theme-divider-color)
+  --divider-color: var(--light-theme-divider-color);
 }
 
-[data-theme="dark"]{
+[data-theme='dark'] {
   --bg-color: var(--dark-theme-bg-color);
   --bg-boxes-color: var(--dark-theme-bg-boxes-color);
+  --bg-baloon-other-color: var(--dark-theme-bg-baloon-other-color);
+  --bg-baloon-my-color: var(--dark-theme-bg-baloon-my-color);
   --font-color: var(--dark-theme-font-color);
-  --divider-color: var(--dark-theme-divider-color)
+  --divider-color: var(--dark-theme-divider-color);
 }
 
-*{
+* {
   font-size: 14px;
-  font-family: poppins, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family:
+    poppins, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   color: var(--font-color);
+}
+
+@media (max-width: 640px) {
+  p,
+  h1,
+  a,
+  strong {
+    font-size: 0.9rem;
+  }
 }

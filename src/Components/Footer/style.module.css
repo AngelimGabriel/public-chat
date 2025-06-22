@@ -1,0 +1,8 @@
+.divFooter {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color);
+  padding: 0 25px;
+}
