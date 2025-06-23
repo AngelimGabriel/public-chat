@@ -12,37 +12,6 @@ export default function Chat() {
   const [mensagens, setMensagens] = useState([]);
   const lastMessageRef = useRef(null);
 
-  function realTimeWebSocket() {
-    const channel = supabase
-      .channel('messages_supabase')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'messages',
-        },
-        (payload) => {
-          console.log('Mudança recebida em tempo real:', payload);
-        }
-      )
-      .subscribe();
-    return channel;
-  }
-
-  // Busca mensagens no banco de dados
-  async function buscarMensagem() {
-    const { error, data } = await supabase
-      .from('messages')
-      .select()
-      .order('timestamp', { ascending: true });
-    if (error) {
-      console.log('Não foi possível efetuar a buscar: ', error);
-    } else {
-      setMensagens(data);
-    }
-  }
-
   // Grava mensagem no banco de dados
   async function gravarMensagem() {
     if (!text.trim() || !user.trim()) return;
@@ -53,22 +22,50 @@ export default function Chat() {
       country_flag: flag,
     });
     setText('');
-    buscarMensagem();
+    // buscarMensagem();
   }
 
   /*  Temporizador para buscar mensagens e atualizar horario no chat */
   const [tempo, setTempo] = useState(new Date().toLocaleTimeString());
   useEffect(() => {
+    // Canal Supabase
+    const channel = supabase
+      .channel('chat_publico')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'messages',
+        },
+        (payload) => {
+          console.log('nova mensagem recebida:', payload.new);
+          setMensagens((prev) => [...prev, payload.new]);
+        }
+      )
+      .subscribe((status) => {
+        console.log('status do canal:', status);
+      });
+
+    // Busca mensagens no banco de dados
+    async function buscarMensagem() {
+      const { error, data } = await supabase
+        .from('messages')
+        .select('*')
+        .order('timestamp', { ascending: true });
+      if (error) {
+        console.log('Não foi possível efetuar a buscar: ', error);
+      } else {
+        console.log('dados:', data);
+        setMensagens(data);
+      }
+    }
     buscarMensagem();
     const intervaloID = setInterval(() => {
       setTempo(new Date().toLocaleTimeString());
     }, 500);
-    return () => clearInterval(intervaloID);
-  }, []);
-
-  useEffect(() => {
-    const channel = realTimeWebSocket();
     return () => {
+      clearInterval(intervaloID);
       supabase.removeChannel(channel);
     };
   }, []);
