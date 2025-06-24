@@ -9,8 +9,16 @@ export default function Chat() {
   const country = localStorage.getItem('country');
   const flag = localStorage.getItem('flag');
   const [text, setText] = useState('');
+  const [newName, setNewName] = useState('');
   const [mensagens, setMensagens] = useState([]);
   const lastMessageRef = useRef(null);
+
+  function changeName() {
+    const parsedName = JSON.parse(user);
+    parsedName.push(newName);
+    localStorage.setItem('user', JSON.stringify(parsedName));
+    setNewName('');
+  }
 
   // Grava mensagem no banco de dados
   async function gravarMensagem() {
@@ -22,11 +30,11 @@ export default function Chat() {
       country_flag: flag,
     });
     setText('');
-    // buscarMensagem();
   }
 
   /*  Temporizador para buscar mensagens e atualizar horario no chat */
   const [tempo, setTempo] = useState(new Date().toLocaleTimeString());
+
   useEffect(() => {
     // Canal Supabase
     const channel = supabase
@@ -39,12 +47,11 @@ export default function Chat() {
           table: 'messages',
         },
         (payload) => {
-          console.log('nova mensagem recebida:', payload.new);
           setMensagens((prev) => [...prev, payload.new]);
         }
       )
       .subscribe((status) => {
-        console.log('status do canal:', status);
+        console.log(status);
       });
 
     // Busca mensagens no banco de dados
@@ -56,7 +63,6 @@ export default function Chat() {
       if (error) {
         console.log('Não foi possível efetuar a buscar: ', error);
       } else {
-        console.log('dados:', data);
         setMensagens(data);
       }
     }
@@ -77,41 +83,67 @@ export default function Chat() {
   return (
     <div className={styles.divChat}>
       <div className={styles.divChatIntern}>
-        <div>
+        <div className={styles.divChatInternChangeName}>
+          <input
+            type='text'
+            placeholder='Digite um nome'
+            onChange={(e) => setNewName(e.target.value)}
+            value={newName}
+          />
+          <input type='button' value='Ok' onClick={changeName} />
+        </div>
+        <div className={styles.divChatInternTitle}>
           <h1>Public Chat</h1>
           <p>{tempo}</p>
         </div>
-        <div>
-          {mensagens.map((mensagem, index) => (
-            <div
-              key={mensagem.id}
-              ref={index === mensagens.length - 1 ? lastMessageRef : null}
-              className={
-                mensagem.username === user
-                  ? styles.divMyMessages
-                  : styles.divOthersMessages
-              }
-            >
-              <strong>{mensagem.username}</strong>{' '}
-              <img
-                src={mensagem.country_flag}
-                alt=''
-                style={{ height: '15px', borderRadius: '4px' }}
-              />
-              <p>{mensagem.text}</p>
-              <div className={styles.divMessageClock}>
-                <p>
-                  {new Date(
-                    new Date(mensagem.timestamp).setHours(
-                      new Date(mensagem.timestamp).getHours() - 3
-                    )
-                  ).toLocaleTimeString()}
-                </p>
+        <div className={styles.divChatInternMessages}>
+          {mensagens.map((mensagem, index) => {
+            let userParsed1;
+            try {
+              const userParsed = JSON.parse(user);
+              userParsed1 = Array.isArray(userParsed) ? userParsed : [];
+            } catch {
+              userParsed1 = [];
+            }
+
+            const mensagemUsername = JSON.parse(mensagem.username);
+            const mensagemUsernameFinal =
+              mensagemUsername[mensagemUsername.length - 1];
+            const isMyMessages = mensagemUsername.every((valor) =>
+              userParsed1.includes(valor)
+            );
+            const mensagemId = mensagem.id;
+            const mensagemCountryFlag = mensagem.country_flag;
+            const mensagemText = mensagem.text;
+            const mensagemTimeStamp = new Date(
+              new Date(mensagem.timestamp).setHours(
+                new Date(mensagem.timestamp).getHours() - 3
+              )
+            ).toLocaleTimeString();
+
+            return (
+              <div
+                key={mensagemId}
+                ref={index === mensagens.length - 1 ? lastMessageRef : null}
+                className={
+                  isMyMessages ? styles.divMyMessages : styles.divOthersMessages
+                }
+              >
+                <strong>{mensagemUsernameFinal}</strong>{' '}
+                <img
+                  src={mensagemCountryFlag}
+                  alt=''
+                  style={{ height: '15px', borderRadius: '4px' }}
+                />
+                <p>{mensagemText}</p>
+                <div className={styles.divMessageClock}>
+                  <p>{mensagemTimeStamp}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-        <div>
+        <div className={styles.divChatInternInputMessage}>
           <input
             onChange={(e) => setText(e.target.value)}
             type='text'

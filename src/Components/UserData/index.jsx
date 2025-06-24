@@ -32,7 +32,7 @@ export default function UserData() {
       if (!user) {
         localStorage.setItem(
           'user',
-          `@user${Math.floor(Math.random() * 100000)}`
+          `["@user${Math.floor(Math.random() * 100000)}"]`
         );
       }
       if (!notice) {
