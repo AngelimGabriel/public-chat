@@ -8,10 +8,19 @@ export default function Chat() {
   const user = localStorage.getItem('user');
   const country = localStorage.getItem('country');
   const flag = localStorage.getItem('flag');
+  const lastMessageRef = useRef(null);
   const [text, setText] = useState('');
   const [newName, setNewName] = useState('');
   const [mensagens, setMensagens] = useState([]);
-  const lastMessageRef = useRef(null);
+
+  function convertArray(user) {
+    try {
+      const parsed = JSON.parse(user);
+      return parsed;
+    } catch {
+      return JSON.parse(JSON.stringify([user]));
+    }
+  }
 
   function changeName() {
     const parsedName = JSON.parse(user);
@@ -32,9 +41,6 @@ export default function Chat() {
     setText('');
   }
 
-  /*  Temporizador para buscar mensagens e atualizar horario no chat */
-  const [tempo, setTempo] = useState(new Date().toLocaleTimeString());
-
   useEffect(() => {
     // Canal Supabase
     const channel = supabase
@@ -50,9 +56,7 @@ export default function Chat() {
           setMensagens((prev) => [...prev, payload.new]);
         }
       )
-      .subscribe((status) => {
-        console.log(status);
-      });
+      .subscribe();
 
     // Busca mensagens no banco de dados
     async function buscarMensagem() {
@@ -60,20 +64,10 @@ export default function Chat() {
         .from('messages')
         .select('*')
         .order('timestamp', { ascending: true });
-      if (error) {
-        console.log('Não foi possível efetuar a buscar: ', error);
-      } else {
-        setMensagens(data);
-      }
+      if (!error) setMensagens(data);
     }
     buscarMensagem();
-    const intervaloID = setInterval(() => {
-      setTempo(new Date().toLocaleTimeString());
-    }, 500);
-    return () => {
-      clearInterval(intervaloID);
-      supabase.removeChannel(channel);
-    };
+    return () => supabase.removeChannel(channel);
   }, []);
 
   useEffect(() => {
@@ -94,23 +88,15 @@ export default function Chat() {
         </div>
         <div className={styles.divChatInternTitle}>
           <h1>Public Chat</h1>
-          <p>{tempo}</p>
         </div>
         <div className={styles.divChatInternMessages}>
           {mensagens.map((mensagem, index) => {
-            let userParsed1;
-            try {
-              const userParsed = JSON.parse(user);
-              userParsed1 = Array.isArray(userParsed) ? userParsed : [];
-            } catch {
-              userParsed1 = [];
-            }
-
-            const mensagemUsername = JSON.parse(mensagem.username);
+            const userParsed = convertArray(user);
+            const mensagemUsername = convertArray(mensagem.username);
             const mensagemUsernameFinal =
               mensagemUsername[mensagemUsername.length - 1];
-            const isMyMessages = mensagemUsername.every((valor) =>
-              userParsed1.includes(valor)
+            const isMyMessages = mensagemUsername.some((valor) =>
+              userParsed.includes(valor)
             );
             const mensagemId = mensagem.id;
             const mensagemCountryFlag = mensagem.country_flag;

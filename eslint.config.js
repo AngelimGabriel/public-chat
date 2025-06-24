@@ -19,7 +19,7 @@ module.exports = {
   plugins: ['react', 'react-hooks', 'prettier'],
   rules: {
     'prettier/prettier': 'error',
-    'react/react-in-jsx-scope': 'off', // React 17+ não precisa importar React
+    'react/react-in-jsx-scope': 'off',
   },
   settings: {
     react: {
