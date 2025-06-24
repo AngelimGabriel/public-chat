@@ -34,6 +34,12 @@ export default function UserData() {
           'user',
           `["@user${Math.floor(Math.random() * 100000)}"]`
         );
+      } else {
+        try {
+          JSON.parse(user);
+        } catch {
+          localStorage.setItem('user', `["${user}"]`);
+        }
       }
       if (!notice) {
         localStorage.setItem('notice', false);
