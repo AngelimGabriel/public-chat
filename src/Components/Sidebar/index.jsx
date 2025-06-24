@@ -14,7 +14,7 @@ export default function Sidebar() {
   function convertString(user) {
     try {
       const parsed = JSON.parse(user);
-      return parsed[0];
+      return parsed[parsed.length - 1];
     } catch {
       return user;
     }
@@ -39,9 +39,11 @@ export default function Sidebar() {
           table: 'messages',
         },
         (payload) => {
-          setLastMessage(payload.new);
+          const Payload = payload.new;
+          setLastMessage(Payload);
           const parsedName = convertString(payload.new.username);
           setUserParsed(parsedName);
+          console.log(Payload);
         }
       )
       .subscribe();
@@ -94,13 +96,7 @@ export default function Sidebar() {
         </div>
         <div>
           <h1>{userParsed}</h1>
-          <p>
-            {lastMessage?.text === ''
-              ? lastMessage?.text
-              : lastMessageOld
-                ? lastMessageOld?.text
-                : ''}
-          </p>
+          <p>{lastMessage?.text || lastMessageOld?.text || ''}</p>
         </div>
       </div>
       <div
