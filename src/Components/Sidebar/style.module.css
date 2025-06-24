@@ -1,0 +1,65 @@
+.divSidebar {
+  width: 300px;
+  height: 100%;
+  padding: 24px;
+  background-color: var(--bg-boxes-color);
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+.divSidebar > div:nth-child(1) > div:nth-child(1) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  svg {
+    cursor: pointer;
+  }
+}
+.divSidebar > div:nth-child(2) {
+  margin-top: 15px;
+}
+.divSidebarUserCard {
+  height: 50px;
+  width: 100%;
+  border-radius: 8px;
+  background-color: var(--bg-baloon-my-color);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: ease 300ms background-color;
+  cursor: pointer;
+}
+.divSidebarUserCardClicked {
+  background-color: var(--bg-baloon-other-color);
+  cursor: auto;
+}
+.divSidebarUserCard:hover {
+  background-color: var(--bg-baloon-other-color);
+}
+.divSidebarUserCard p {
+  font-size: 0.9rem;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.divSidebarUserCard h1 {
+  font-size: 0.9rem;
+}
+.divSidebarUserCard > div:last-child {
+  flex: 1;
+  min-width: 0;
+  margin-right: 5px;
+}
+.divSidebarUserCard_Photo {
+  margin: 5px;
+  border-radius: 100%;
+  height: 40px;
+  width: 40px;
+  background-color: var(--bg-boxes-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}

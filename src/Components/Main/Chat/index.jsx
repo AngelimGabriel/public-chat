@@ -13,6 +13,7 @@ export default function Chat() {
   const [newName, setNewName] = useState('');
   const [mensagens, setMensagens] = useState([]);
 
+  // Converte o usuario em array
   function convertArray(user) {
     try {
       const parsed = JSON.parse(user);
@@ -22,6 +23,7 @@ export default function Chat() {
     }
   }
 
+  // Muda o nome de usuario
   function changeName() {
     const parsedName = JSON.parse(user);
     parsedName.push(newName);
