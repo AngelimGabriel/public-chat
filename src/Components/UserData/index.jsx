@@ -34,7 +34,12 @@ export default function UserData() {
           `@user${Math.floor(Math.random() * 100000)}`
         );
       } else {
-        localStorage.setItem('user', user.replace(/[\[\]"]/g, ''));
+        const newUser = user.replace(/[\[\]"]/g, '');
+        const newUserSplit = newUser.split(',');
+
+        if (newUserSplit > 1) {
+          localStorage.setItem('user', newUserSplit[newUserSplit.length - 1]);
+        }
       }
     }
     InitUser();

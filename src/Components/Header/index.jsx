@@ -3,10 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircleHalfStroke,
   faArrowUpRightFromSquare,
-  faBars,
 } from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 function alterar_tema() {
   if (document.documentElement.getAttribute('data-theme') === 'dark') {
@@ -19,7 +17,6 @@ function alterar_tema() {
 }
 
 export default function Header() {
-  const [menuVisible, setMenuVisible] = useState(false);
   useEffect(() => {
     const savedtheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedtheme);
@@ -41,37 +38,6 @@ export default function Header() {
         </h1>
       </div>
       <div className={styles.divGitHub}>
-        {/* <div>
-          <FontAwesomeIcon
-            style={{ cursor: 'pointer' }}
-            icon={faBars}
-            size='2xl'
-            onClick={() => setMenuVisible(!menuVisible)}
-          />
-          <div
-            style={{ display: menuVisible ? 'flex' : 'none' }}
-            className={styles.divMenu}
-          >
-            <button
-              className={styles.buttonGitHub}
-              type='button'
-              onClick={() =>
-                window.open(
-                  'https://github.com/login/oauth/authorize?client_id=Ov23liWJCDfwHQ9HJB1Y&scope=read:user',
-                  'Login com GitHub',
-                  'width=600,height=700'
-                )
-              }
-            >
-              <FontAwesomeIcon
-                icon={faGithub}
-                size='xl'
-                className={styles['icon-brands']}
-              />
-              Login
-            </button>
-          </div>
-        </div> */}
         <FontAwesomeIcon
           onClick={alterar_tema}
           id='theme'
