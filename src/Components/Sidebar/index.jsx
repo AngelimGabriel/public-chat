@@ -1,14 +1,38 @@
 import styles from './style.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faRightLong } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../supabaseCliente';
+import { dbName } from '../../../dbName';
 
 export default function Sidebar() {
   const [chat, setChat] = useState('');
   const [lastMessage, setLastMessage] = useState(null);
   const [lastMessageOld, setLastMessageOld] = useState(null);
   const [userParsed, setUserParsed] = useState('');
+  const [iconBackSideBar, setIconBackSideBar] = useState(null);
+  const [titleChatSideBar, setTitleChatSideBar] = useState('');
+
+  const chats = [{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }];
+
+  const [sidebarResize, setSidebarResize] = useState(true);
+  const sidebarClass = {
+    expanded: {
+      container: styles.divSidebar,
+      title: styles.divSidebarTitle,
+      userCard: styles.divSidebarUserCard,
+      userCardClicked: styles.divSidebarChatClicked,
+      userPhoto: styles.divSidebarUserCardPhoto,
+    },
+    colapsed: {
+      container: styles.divSidebar_Colapsed,
+      title: styles.divSidebarTitle_Colapsed,
+      userCard: styles.divSidebarUserCard_Colapsed,
+      userPhoto: styles.divSidebarUserCardPhoto_Colapsed,
+      userPhotoClicked: styles.divSidebarUserCardPhotoClicked_Colapsed,
+    },
+  };
 
   // Converte o usuario em array
   function convertString(user) {
@@ -20,15 +44,11 @@ export default function Sidebar() {
     }
   }
 
-  function changeChat(newChat) {
-    const divChatOld = document.getElementById(chat);
-    setChat(newChat);
-    const divChatNew = document.getElementById(newChat);
-    divChatOld.classList.remove(styles.divSidebarUserCardClicked);
-    divChatNew.classList.add(styles.divSidebarUserCardClicked);
-  }
-
   useEffect(() => {
+    setSidebarResize(false);
+    setIconBackSideBar(faLeftLong);
+    setTitleChatSideBar('Chats');
+
     const channel = supabase
       .channel('lastMessage')
       .on(
@@ -36,7 +56,7 @@ export default function Sidebar() {
         {
           event: '*',
           schema: 'public',
-          table: 'messages',
+          table: dbName,
         },
         (payload) => {
           const Payload = payload.new;
@@ -50,7 +70,7 @@ export default function Sidebar() {
 
     async function buscarMensagem() {
       const { data, error } = await supabase
-        .from('messages')
+        .from(dbName)
         .select('*')
         .order('id', { ascending: false })
         .limit(1);
@@ -61,89 +81,77 @@ export default function Sidebar() {
       }
     }
     buscarMensagem();
+    function chatInitial() {
+      const firstChat = '1';
+      setChat(firstChat);
+    }
+    chatInitial();
 
     return () => supabase.removeChannel(channel);
   }, []);
 
-  useEffect(() => {
-    function chatInitial() {
-      const firstChat = '1';
-      setChat(firstChat);
-      const divInitial = document.getElementById(firstChat);
-      divInitial.classList.add(styles.divSidebarUserCardClicked);
-    }
-    chatInitial();
-  }, []);
-
   return (
-    <div className={styles.divSidebar}>
-      <div>
-        <div>
-          <h1>Chats</h1>
-          <FontAwesomeIcon icon={faLeftLong} />
-        </div>
-        <hr />
-      </div>
+    <div
+      id='sidebar_id'
+      className={
+        sidebarResize
+          ? sidebarClass.colapsed.container
+          : sidebarClass.expanded.container
+      }
+    >
       <div
-        id='1'
-        onClick={(e) => {
-          changeChat(e.currentTarget.id);
-        }}
-        className={styles.divSidebarUserCard}
+        className={
+          sidebarResize
+            ? sidebarClass.colapsed.title
+            : sidebarClass.expanded.title
+        }
       >
-        <div className={styles.divSidebarUserCard_Photo}>
-          <h1>PC</h1>
-        </div>
-        <div>
-          <h1>{userParsed}</h1>
-          <p>{lastMessage?.text || lastMessageOld?.text || ''}</p>
-        </div>
+        <h1>{titleChatSideBar}</h1>
+        <FontAwesomeIcon
+          icon={iconBackSideBar}
+          onClick={() => {
+            setSidebarResize(sidebarResize === true ? false : true);
+            setIconBackSideBar(
+              iconBackSideBar === faLeftLong ? faRightLong : faLeftLong
+            );
+            setTitleChatSideBar(titleChatSideBar === '' ? 'Chats' : '');
+          }}
+        />
       </div>
-      <div
-        id='2'
-        onClick={(e) => {
-          changeChat(e.currentTarget.id);
-        }}
-        className={styles.divSidebarUserCard}
-      >
-        <div className={styles.divSidebarUserCard_Photo}>
-          <h1>GA</h1>
+
+      {chats.map((chatDiv) => (
+        <div
+          key={chatDiv.id}
+          onClick={() => setChat(chatDiv.id)}
+          className={`${
+            sidebarResize
+              ? sidebarClass.colapsed.userCard
+              : sidebarClass.expanded.userCard
+          } ${
+            !sidebarResize &&
+            chatDiv.id === chat &&
+            sidebarClass.expanded.userCardClicked
+          }`}
+        >
+          <div
+            className={`${
+              sidebarResize
+                ? sidebarClass.colapsed.userPhoto
+                : sidebarClass.expanded.userPhoto
+            } ${
+              sidebarResize &&
+              chatDiv.id === chat &&
+              sidebarClass.colapsed.userPhotoClicked
+            }`}
+          >
+            <h1>PC</h1>
+          </div>
+          <div>
+            <h1>{userParsed}</h1>
+            <p>{lastMessage?.text || lastMessageOld?.text || ''}</p>
+          </div>
         </div>
-        <div>
-          <h1>Gabriel Angelim</h1>
-          <p>Backup's</p>
-        </div>
-      </div>
-      <div
-        id='3'
-        onClick={(e) => {
-          changeChat(e.currentTarget.id);
-        }}
-        className={styles.divSidebarUserCard}
-      >
-        <div className={styles.divSidebarUserCard_Photo}>
-          <h1>KD</h1>
-        </div>
-        <div>
-          <h1>Kathellen Dantas</h1>
-          <p>Vamos comer bacon baiana</p>
-        </div>
-      </div>
-      <div
-        id='4'
-        onClick={(e) => {
-          changeChat(e.currentTarget.id);
-        }}
-        className={styles.divSidebarUserCard}
-      >
-        <div className={styles.divSidebarUserCard_Photo}>
-          <h1>EG</h1>
-        </div>
-        <div>
-          <h1>Edivan Gomes</h1>
-          <p>Pepinha vai fechar</p>
-        </div>
-      </div>
+      ))}
     </div>
   );
 }

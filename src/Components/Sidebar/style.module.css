@@ -5,20 +5,27 @@
   background-color: var(--bg-boxes-color);
   gap: 5px;
   display: flex;
+  align-items: center;
   flex-direction: column;
   user-select: none;
+  transition: ease 300ms width;
 }
-.divSidebar > div:nth-child(1) > div:nth-child(1) {
+
+.divSidebarTitle {
+  height: 30px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
   svg {
     cursor: pointer;
   }
+  h1 {
+    display: block;
+  }
 }
-.divSidebar > div:nth-child(2) {
-  margin-top: 15px;
-}
+
 .divSidebarUserCard {
   height: 50px;
   width: 100%;
@@ -30,9 +37,20 @@
   transition: ease 300ms background-color;
   cursor: pointer;
 }
-.divSidebarUserCardClicked {
+.divSidebarChatClicked {
   background-color: var(--bg-baloon-other-color);
   cursor: auto;
+}
+.divSidebarUserCardPhoto {
+  margin: 5px;
+  border-radius: 100%;
+  height: 40px;
+  width: 40px;
+  background-color: var(--bg-boxes-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
 }
 .divSidebarUserCard:hover {
   background-color: var(--bg-baloon-other-color);
@@ -52,14 +70,84 @@
   min-width: 0;
   margin-right: 5px;
 }
-.divSidebarUserCard_Photo {
+
+/* SIDEBAR COLAPSED */
+
+.divSidebar_Colapsed {
+  width: 50px;
+  height: 100%;
+  padding: 24px 0;
+  background-color: var(--bg-boxes-color);
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  user-select: none;
+  transition: ease 300ms width;
+}
+
+.divSidebarTitle_Colapsed {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  svg {
+    cursor: pointer;
+  }
+  h1 {
+    display: block;
+  }
+}
+
+.divSidebarUserCard_Colapsed {
+  height: 50px;
+  width: 100%;
+  border-radius: 8px;
+  background-color: var(--bg-boxes-color);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: ease 300ms background-color;
+  cursor: pointer;
+}
+
+div.divSidebarUserCardPhotoClicked_Colapsed {
+  background-color: var(--bg-baloon-other-color);
+  cursor: auto;
+}
+
+.divSidebarUserCardPhoto_Colapsed {
   margin: 5px;
   border-radius: 100%;
   height: 40px;
   width: 40px;
-  background-color: var(--bg-boxes-color);
+  background-color: var(--bg-baloon-my-color);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+  transition: ease 300ms background-color;
+}
+
+.divSidebarUserCardPhoto_Colapsed:hover {
+  background-color: var(--bg-baloon-other-color);
+}
+.divSidebarUserCard_Colapsed p {
+  display: none;
+  font-size: 0.9rem;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.divSidebarUserCard_Colapsed h1 {
+  font-size: 0.9rem;
+}
+.divSidebarUserCard_Colapsed > div:last-child {
+  display: none;
+  flex: 1;
+  min-width: 0;
+  margin-right: 5px;
 }

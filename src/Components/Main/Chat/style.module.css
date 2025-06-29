@@ -1,47 +1,38 @@
 .divChat {
-  flex: 1;
+  width: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  padding: 0 25px;
 }
 
 .divChatIntern {
+  display: flex;
+  flex-direction: column;
   height: calc(100% - 25px);
-  width: calc(100% - 50px);
+  width: 650px;
+  min-width: 325px;
   background-color: var(--bg-boxes-color);
   border-radius: 8px;
   padding: 25px;
+  gap: 12px;
 }
 
-/* 
-  1 = titulo
-  2 = chat em si
-  3 = caixa de digitação
-*/
-
-/* .divChatInternChangeName {
-  display: flex;
-  gap: 12px;
-  height: 20px;
-} */
-
-.divChatInternTitle,
-.divChatInternInputMessage,
-.divChatInternChangeName {
+.divChatInternInputMessage {
   height: 45px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
 }
+
 .divChatInternMessages {
-  margin-bottom: 15px;
-  height: calc(100% - calc(45px * 3) - 15px);
+  height: 100%;
   border-radius: 8px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  padding: 15px 10px 15px 0;
+  padding: 0 10px 15px 0;
   gap: 12px;
 }
 .divChatInternChangeName input:first-of-type {
@@ -86,20 +77,20 @@
 }
 .divOthersMessages {
   word-wrap: break-word;
-  border-radius: 24px 24px 24px 0;
+  border-radius: 15px 15px 15px 0;
   background-color: var(--bg-baloon-other-color);
   padding: 12px;
   width: 85%;
-  box-shadow: 4px 4px 10px -1px #00000050;
+  box-shadow: 4px 4px 10px -1px #00000020;
 }
 .divMyMessages {
   word-wrap: break-word;
-  border-radius: 24px 24px 0 24px;
+  border-radius: 15px 15px 0 15px;
   background-color: var(--bg-baloon-my-color);
   padding: 12px;
   width: 85%;
   align-self: flex-end;
-  box-shadow: 4px 4px 10px -1px #00000050;
+  box-shadow: 4px 4px 10px -1px #00000020;
 }
 .divMessageClock {
   display: flex;
