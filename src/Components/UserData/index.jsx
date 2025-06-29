@@ -37,7 +37,7 @@ export default function UserData() {
         const newUser = user.replace(/[\[\]"]/g, '');
         const newUserSplit = newUser.split(',');
 
-        if (newUserSplit > 1) {
+        if (newUserSplit.length > 1) {
           localStorage.setItem('user', newUserSplit[newUserSplit.length - 1]);
         }
       }
