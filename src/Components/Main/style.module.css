@@ -1,5 +1,6 @@
 .divMain {
   height: calc(100dvh - 125px);
+  width: 100dvw;
   background-color: var(--bg-color);
   display: flex;
 }

@@ -1,14 +1,55 @@
-.divHeader{
-    display: flex;
-    height: 65px;
-    justify-content: space-around;
-    align-items: center;
-    border-bottom: 1px solid #ccc;
-    background-color: var(--bg-boxes-color);
+.divHeader {
+  display: flex;
+  height: 65px;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  background-color: var(--bg-boxes-color);
 }
-.divGitHub{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
+.divGitHub {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+.buttonGitHub {
+  display: flex;
+  width: 120px;
+  gap: 12px;
+  padding: 6px 24px;
+  border-radius: 5px;
+  border: 0;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  transition: ease 200ms box-shadow;
+}
+.buttonGitHub:hover {
+  box-shadow: 0 0 5px 0.5px #d4af37;
+}
+.icon-brands path {
+  fill: #ffffff;
+}
+.divGitHub > div:first-of-type {
+  position: relative;
+}
+.divMenu {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+
+  height: 83px;
+  width: 170px;
+  margin-top: 10px;
+  padding: 25px 0;
+  background-color: var(--bg-boxes-color);
+  border-radius: 6px;
+  box-shadow: 5px 5px 15px -5px black;
+
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  z-index: 1;
 }

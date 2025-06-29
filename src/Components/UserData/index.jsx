@@ -4,7 +4,6 @@ export default function UserData() {
     async function InitUser() {
       const country = localStorage.getItem('country');
       const user = localStorage.getItem('user');
-      const notice = localStorage.getItem('notice');
 
       if (!country) {
         try {
@@ -32,17 +31,15 @@ export default function UserData() {
       if (!user) {
         localStorage.setItem(
           'user',
-          `["@user${Math.floor(Math.random() * 100000)}"]`
+          `@user${Math.floor(Math.random() * 100000)}`
         );
       } else {
-        try {
-          JSON.parse(user);
-        } catch {
-          localStorage.setItem('user', `["${user}"]`);
+        const newUser = user.replace(/[\[\]"]/g, '');
+        const newUserSplit = newUser.split(',');
+
+        if (newUserSplit.length > 1) {
+          localStorage.setItem('user', newUserSplit[newUserSplit.length - 1]);
         }
-      }
-      if (!notice) {
-        localStorage.setItem('notice', false);
       }
     }
     InitUser();

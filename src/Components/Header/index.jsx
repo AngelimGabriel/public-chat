@@ -1,7 +1,9 @@
 import styles from './style.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleHalfStroke } from '@fortawesome/free-solid-svg-icons';
-import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCircleHalfStroke,
+  faArrowUpRightFromSquare,
+} from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 
 function alterar_tema() {
@@ -23,8 +25,6 @@ export default function Header() {
     <div className={styles.divHeader}>
       <div>
         <h1>Public Chat</h1>
-      </div>
-      <div className={styles.divGitHub}>
         <h1>
           GitHub:{' '}
           <a
@@ -36,6 +36,8 @@ export default function Header() {
             Gabriel Angelim <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
           </a>
         </h1>
+      </div>
+      <div className={styles.divGitHub}>
         <FontAwesomeIcon
           onClick={alterar_tema}
           id='theme'

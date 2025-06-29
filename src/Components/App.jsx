@@ -3,13 +3,10 @@ import Header from './Header';
 import Main from './Main';
 import UserData from './UserData';
 import Footer from './Footer';
-// import Notice from './Notice';
 
-function App() {
-  // const notice = localStorage.getItem('notice');
+export default function App() {
   return (
     <>
-      {/* {notice === 'false' && <Notice />} */}
       <UserData />
       <Header />
       <Main />
@@ -17,5 +14,3 @@ function App() {
     </>
   );
 }
-
-export default App;
