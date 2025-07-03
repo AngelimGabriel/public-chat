@@ -3,9 +3,12 @@ export default async function verificarToken() {
   const userOld = localStorage.getItem('userOld');
   if (!token) return;
   try {
-    const response = await fetch('http://localhost:3000/verifytoken', {
-      headers: { authorization: `Bearer ${token}` },
-    });
+    const response = await fetch(
+      'http://public-chat-react-backend.onrender.com/verifytoken',
+      {
+        headers: { authorization: `Bearer ${token}` },
+      }
+    );
 
     if (!response.ok)
       throw new Error('Não foi possível efetuar a verificação.');
