@@ -4,7 +4,7 @@ export default async function verificarToken() {
   if (!token) return;
   try {
     const response = await fetch(
-      'http://public-chat-react-backend.onrender.com/verifytoken',
+      'https://public-chat-react-backend.onrender.com/verifytoken',
       {
         headers: { authorization: `Bearer ${token}` },
       }
