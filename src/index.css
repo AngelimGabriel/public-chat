@@ -6,6 +6,9 @@
   --light-theme-font-color: hsl(221, 39%, 11%);
   --light-theme-divider-color: #ccc;
 
+  --light-theme-github-color: #000;
+  --light-theme-github-text-color: #fff;
+
   --dark-theme-bg-color: hsl(215, 28%, 17%);
   --dark-theme-bg-baloon-other-color: hsl(210, 45%, 21%);
   --dark-theme-bg-baloon-my-color: hsl(210, 45%, 15%);
@@ -13,12 +16,17 @@
   --dark-theme-font-color: hsl(220, 14%, 96%);
   --dark-theme-divider-color: hsl(0, 0%, 20%);
 
+  --dark-theme-github-color: #fff;
+  --dark-theme-github-text-color: #000;
+
   --bg-color: var(--light-theme-bg-color);
   --bg-boxes-color: var(--light-theme-bg-boxes-color);
   --bg-baloon-other-color: var(--light-theme-bg-baloon-other-color);
   --bg-baloon-my-color: var(--light-theme-bg-baloon-my-color);
   --font-color: var(--light-theme-font-color);
   --divider-color: var(--light-theme-divider-color);
+  --github-button-color: var(--light-theme-github-color);
+  --github-text-color: var(--light-theme-github-text-color);
 }
 
 [data-theme='dark'] {
@@ -28,6 +36,8 @@
   --bg-baloon-my-color: var(--dark-theme-bg-baloon-my-color);
   --font-color: var(--dark-theme-font-color);
   --divider-color: var(--dark-theme-divider-color);
+  --github-button-color: var(--dark-theme-github-color);
+  --github-text-color: var(--dark-theme-github-text-color);
 }
 
 * {

@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircleHalfStroke,
   faArrowUpRightFromSquare,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
-import { useEffect } from 'react';
+import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { useEffect, useState } from 'react';
 
 function alterar_tema() {
   if (document.documentElement.getAttribute('data-theme') === 'dark') {
@@ -17,10 +19,14 @@ function alterar_tema() {
 }
 
 export default function Header() {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const authenticated = localStorage.getItem('auth') === 'true';
+
   useEffect(() => {
     const savedtheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedtheme);
   }, []);
+
   return (
     <div className={styles.divHeader}>
       <div>
@@ -38,6 +44,52 @@ export default function Header() {
         </h1>
       </div>
       <div className={styles.divGitHub}>
+        <div>
+          <FontAwesomeIcon
+            onClick={() => setMenuVisible(!menuVisible)}
+            id='theme'
+            icon={faBars}
+            size='2xl'
+            style={{ cursor: 'pointer' }}
+          />
+          <div
+            style={{
+              opacity: menuVisible ? '1' : '0',
+              visibility: menuVisible ? 'visible' : 'hidden',
+            }}
+            className={styles.divMenu}
+          >
+            {!authenticated ? (
+              <>
+                <h1>Login</h1>
+                <button
+                  className={styles.buttonGitHub}
+                  onClick={() => {
+                    window.location.href =
+                      'https://github.com/login/oauth/authorize?client_id=Ov23liWJCDfwHQ9HJB1Y&scope=user:email';
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faGithub}
+                    className={styles.githubLogo}
+                    size='xl'
+                  />
+                  GitHub
+                </button>
+                {/* <button className={styles.buttonGoogle}>
+                  <FontAwesomeIcon
+                    icon={faGoogle}
+                    className={styles.googleLogo}
+                    size='xl'
+                  />
+                  Google
+                </button> */}
+              </>
+            ) : (
+              <h1>Logado</h1>
+            )}
+          </div>
+        </div>
         <FontAwesomeIcon
           onClick={alterar_tema}
           id='theme'

@@ -3,14 +3,28 @@ import Header from './Header';
 import Main from './Main';
 import UserData from './UserData';
 import Footer from './Footer';
+import { useEffect, useState } from 'react';
+import saveToken from '../utils/saveToken';
+import verificarToken from '../utils/verifyJWT';
 
 export default function App() {
+  const [isUserDataReady, setIsUserDataReady] = useState(false);
+
+  useEffect(() => {
+    saveToken();
+    verificarToken();
+  }, []);
+
   return (
     <>
-      <UserData />
-      <Header />
-      <Main />
-      <Footer />
+      <UserData onReady={() => setIsUserDataReady(true)} />
+      {isUserDataReady && (
+        <>
+          <Header />
+          <Main />
+          <Footer />
+        </>
+      )}
     </>
   );
 }
