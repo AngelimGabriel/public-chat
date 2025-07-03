@@ -1,10 +1,11 @@
+//
 export default async function verificarToken() {
   const token = localStorage.getItem('token');
   const userOld = localStorage.getItem('userOld');
   if (!token) return;
   try {
     const response = await fetch(
-      'http://public-chat-react-backend.onrender.com/verifytoken',
+      'https://public-chat-react-backend.onrender.com/verifytoken',
       {
         headers: { authorization: `Bearer ${token}` },
       }
