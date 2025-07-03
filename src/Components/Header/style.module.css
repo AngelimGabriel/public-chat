@@ -14,12 +14,24 @@
 }
 .buttonGitHub {
   display: flex;
-  width: 120px;
   gap: 12px;
+  width: 100%;
   padding: 6px 24px;
   border-radius: 5px;
   border: 0;
-  background-color: #000;
+  background-color: var(--github-button-color);
+  color: var(--github-text-color);
+  cursor: pointer;
+  transition: ease 200ms box-shadow;
+}
+.buttonGoogle {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 24px;
+  border-radius: 5px;
+  border: 0;
+  background-color: #176ced;
   color: white;
   cursor: pointer;
   transition: ease 200ms box-shadow;
@@ -27,21 +39,24 @@
 .buttonGitHub:hover {
   box-shadow: 0 0 5px 0.5px #d4af37;
 }
-.icon-brands path {
-  fill: #ffffff;
+.githubLogo path {
+  fill: var(--github-text-color);
+}
+.googleLogo path {
+  fill: #fff;
 }
 .divGitHub > div:first-of-type {
   position: relative;
 }
 .divMenu {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: baseline;
 
-  height: 83px;
-  width: 170px;
   margin-top: 10px;
-  padding: 25px 0;
+  padding: 25px;
+  gap: 10px;
   background-color: var(--bg-boxes-color);
   border-radius: 6px;
   box-shadow: 5px 5px 15px -5px black;
@@ -52,4 +67,8 @@
   transform: translateX(-50%);
 
   z-index: 1;
+  transition:
+    ease 200ms opacity,
+    ease 200ms visibility;
+  user-select: none;
 }

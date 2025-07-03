@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-export default function UserData() {
+export default function UserData({ onReady }) {
   useEffect(() => {
     async function InitUser() {
       const country = localStorage.getItem('country');
@@ -41,6 +41,7 @@ export default function UserData() {
           localStorage.setItem('user', newUserSplit[newUserSplit.length - 1]);
         }
       }
+      onReady();
     }
     InitUser();
   }, []);

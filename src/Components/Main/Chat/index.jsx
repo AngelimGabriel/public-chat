@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, createContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { supabase } from '../../../../supabaseCliente';
+import verified from '../../../public/verified.png';
 import axios from 'axios';
 import styles from './style.module.css';
 
@@ -15,6 +16,7 @@ export default function Chat() {
   const [mensagens, setMensagens] = useState([]);
   const [isLoading, setIsLoading] = useState(null);
   const [semMensagem, setSemMensagem] = useState(null);
+  const channelRef = useRef(null);
 
   // Grava mensagem no banco de dados
   async function gravarMensagem() {
@@ -26,40 +28,26 @@ export default function Chat() {
       authenticated: authenticated,
       username: user,
     };
-    console.log(payload);
-    axios.post(
+    await axios.post(
       'https://public-chat-react-backend.onrender.com/sendmessage',
+      // 'http://localhost:3000/sendmessage',
       payload,
       {
-        headers: { Accept: 'application/jsn' },
+        headers: {
+          Accept: 'application/json',
+        },
       }
     );
     setText('');
   }
 
   useEffect(() => {
-    // Canal Supabase
-    const channel = supabase
-      .channel('chat_publico')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'messages',
-        },
-        (payload) => {
-          setMensagens((prev) => [...prev, payload.new]);
-          setSemMensagem(false);
-        }
-      )
-      .subscribe();
-
     // Busca mensagens no banco de dados
     async function buscarMensagem() {
       setIsLoading(true);
       const response = await fetch(
         `https://public-chat-react-backend.onrender.com/getmessages/${user}`
+        // `http://localhost:3000/getmessages/${user}`
       );
       const data = await response.json();
       setIsLoading(false);
@@ -72,7 +60,32 @@ export default function Chat() {
       setMensagens(data);
     }
     buscarMensagem();
-    return () => supabase.removeChannel(channel);
+
+    // Canal Supabase
+    if (!channelRef.current) {
+      channelRef.current = supabase
+        .channel('chat_publico')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'messages',
+          },
+          (payload) => {
+            setMensagens((prev) => [...prev, payload.new]);
+            setSemMensagem(false);
+          }
+        )
+        .subscribe(undefined, 31536000);
+    }
+
+    return () => {
+      if (channelRef.current && process.env.NODE_ENV === 'production') {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -82,7 +95,12 @@ export default function Chat() {
   return (
     <div className={styles.divChat}>
       <div className={styles.divChatIntern}>
-        <h1>Usuário: {user}</h1>
+        <h1 style={{ display: 'flex', gap: '3px' }}>
+          Usuário: {user && user}{' '}
+          {authenticated && (
+            <img src={verified} style={{ height: '1.2rem' }} alt='' />
+          )}
+        </h1>
         <div className={styles.divChatInternMessages}>
           {isLoading ? (
             <div
@@ -119,6 +137,7 @@ export default function Chat() {
                 ? mensagem.username
                 : mensagem.github_username;
               const mensagemId = mensagem.id;
+              const mensagemAutenticada = mensagem.authenticated;
               const mensagemCountryFlag = mensagem.country_flag;
               const mensagemText = mensagem.text;
               const timestamp =
@@ -148,7 +167,10 @@ export default function Chat() {
                     src={mensagemCountryFlag}
                     alt=''
                     style={{ height: '15px', borderRadius: '4px' }}
-                  />
+                  />{' '}
+                  {mensagemAutenticada && (
+                    <img src={verified} style={{ height: '1.2rem' }} alt='' />
+                  )}
                   <p>{mensagemText}</p>
                   <div className={styles.divMessageClock}>
                     <p>{mensagemTimeStamp}</p>
