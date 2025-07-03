@@ -1,3 +1,4 @@
+//
 export default async function verificarToken() {
   const token = localStorage.getItem('token');
   const userOld = localStorage.getItem('userOld');
